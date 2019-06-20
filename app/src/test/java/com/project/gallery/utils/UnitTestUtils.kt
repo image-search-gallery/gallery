@@ -1,6 +1,5 @@
 package com.project.gallery.utils
 
-import io.reactivex.Flowable
 import org.mockito.BDDMockito
 
 /**
