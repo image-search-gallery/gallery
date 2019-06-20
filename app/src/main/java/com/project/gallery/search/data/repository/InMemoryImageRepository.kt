@@ -2,7 +2,12 @@ package com.project.gallery.search.data.repository
 
 class InMemoryImageRepository : ImageRepository {
 
-    val kittens = listOf(
+    companion object{
+        const val PUPPIES_KEYWORD = "puppies"
+        const val KITTENS_KEYWORD = "kittens"
+    }
+
+    private val kittens = listOf(
         "https://shop-cdn-m.shpp.ext.zooplus.io/bilder/royal/canin/maine/coon/kitten/9/400/rc_maincoonk_9.jpg",
         "http://powerfulmind.co/wp-content/uploads/2019/02/maine-coon-kittens-37-5c34c902b5aa5__700.jpg",
         "https://www.thehappycatsite.com/wp-content/uploads/2017/12/maine-coon-kittens.jpg",
@@ -15,7 +20,7 @@ class InMemoryImageRepository : ImageRepository {
         "http://fallinpets.com/wp-content/uploads/2016/12/Adorable-Maine-Coon-Kitten.jpg"
     )
 
-    val puppies = listOf(
+    private val puppies = listOf(
         "http://www.mishkaranch.com/photos/Turre_1.jpg",
         "https://gfp-2a3tnpzj.stackpathdns.com/wp-content/uploads/2016/07/Alaskan-Malamute-2.jpg",
         "https://s3.envato.com/files/253707280/2016_198_0302_P.jpg",
@@ -29,6 +34,23 @@ class InMemoryImageRepository : ImageRepository {
     )
 
     override fun search(keyword: String): ImagePaginator {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return InMemoryImagePaginator()
+    }
+
+    inner class InMemoryImagePaginator : ImagePaginator {
+
+        val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()
+
+        override fun loadNext() {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun subscribeForImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
+            listeners.add(listener)
+        }
+
+        override fun unsubscribeFromImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
     }
 }
