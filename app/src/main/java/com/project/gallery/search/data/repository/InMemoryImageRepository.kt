@@ -1,7 +1,5 @@
 package com.project.gallery.search.data.repository
 
-import com.project.gallery.search.data.repository.ImagePaginator.*
-
 class InMemoryImageRepository : ImageRepository {
 
     val kittens = listOf(
@@ -30,19 +28,7 @@ class InMemoryImageRepository : ImageRepository {
         "http://www.cascademalamutes.com/uploads/8/2/9/1/82910972/max25.jpg"
     )
 
-    override fun subscribeForImageUpdates(listener: ImageUpdatesListener) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun unsubscribeFromImageUpdates(listener: ImageUpdatesListener) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun search() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun loadNext() {
+    override fun search(keyword: String): ImagePaginator {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
