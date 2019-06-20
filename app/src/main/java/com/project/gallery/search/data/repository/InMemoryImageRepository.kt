@@ -2,7 +2,7 @@ package com.project.gallery.search.data.repository
 
 class InMemoryImageRepository : ImageRepository {
 
-    companion object{
+    companion object {
         const val PUPPIES_KEYWORD = "puppies"
         const val KITTENS_KEYWORD = "kittens"
     }
@@ -34,23 +34,53 @@ class InMemoryImageRepository : ImageRepository {
     )
 
     override fun search(keyword: String): ImagePaginator {
-        return InMemoryImagePaginator()
+        return InMemoryImagePaginator(keyword)
     }
 
-    inner class InMemoryImagePaginator : ImagePaginator {
+    inner class InMemoryImagePaginator(val keyword: String) : ImagePaginator {
 
-        val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()
-
-        override fun loadNext() {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        private val maxImageCollectionSize = when (keyword) {
+            KITTENS_KEYWORD -> kittens.size
+            PUPPIES_KEYWORD -> puppies.size
+            else -> 0
         }
 
+        var nextImageIndex = 0
+        val pageSize = 4
+
+        private val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()
+
+        override fun loadNext() {
+            synchronized(listeners) {
+                listeners.forEach {
+                    val newNextImageIndex = nextImageIndex + pageSize - 1
+                    it.update(
+                        when (keyword) {
+                            // TODO: proceed with determining correct indeces and avoiding out of bounds
+                            KITTENS_KEYWORD -> kittens.subList(
+                                nextImageIndex,
+                                newNextImageIndex
+                            )
+                            PUPPIES_KEYWORD -> puppies.subList(newNextImageIndex, newNextImageIndex)
+                            else -> emptyList()
+                        }
+                    )
+                }
+            }
+        }
+
+        private fun hasNext() = nextImageIndex <= maxImageCollectionSize
+
         override fun subscribeForImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
-            listeners.add(listener)
+            synchronized(listeners) {
+                listeners.add(listener)
+            }
         }
 
         override fun unsubscribeFromImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            synchronized(listeners) {
+                listeners.remove(listener)
+            }
         }
     }
 }
