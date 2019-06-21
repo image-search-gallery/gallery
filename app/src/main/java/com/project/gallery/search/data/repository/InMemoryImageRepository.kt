@@ -39,9 +39,9 @@ class InMemoryImageRepository : ImageRepository {
 
     inner class InMemoryImagePaginator(val keyword: String) : ImagePaginator {
 
-        private val maxImageCollectionSize = when (keyword) {
-            KITTENS_KEYWORD -> kittens.size
-            PUPPIES_KEYWORD -> puppies.size
+        private val maxImageCollectionIndex = when (keyword) {
+            KITTENS_KEYWORD -> kittens.size - 1
+            PUPPIES_KEYWORD -> puppies.size - 1
             else -> 0
         }
 
@@ -54,22 +54,17 @@ class InMemoryImageRepository : ImageRepository {
             synchronized(listeners) {
                 listeners.forEach {
                     val newNextImageIndex = nextImageIndex + pageSize - 1
+                    nextImageIndex = if (newNextImageIndex <= maxImageCollectionIndex) newNextImageIndex else maxImageCollectionIndex
                     it.update(
                         when (keyword) {
-                            // TODO: proceed with determining correct indeces and avoiding out of bounds
-                            KITTENS_KEYWORD -> kittens.subList(
-                                nextImageIndex,
-                                newNextImageIndex
-                            )
-                            PUPPIES_KEYWORD -> puppies.subList(newNextImageIndex, newNextImageIndex)
+                            KITTENS_KEYWORD -> kittens.subList(0, nextImageIndex)
+                            PUPPIES_KEYWORD -> puppies.subList(0, nextImageIndex)
                             else -> emptyList()
                         }
                     )
                 }
             }
         }
-
-        private fun hasNext() = nextImageIndex <= maxImageCollectionSize
 
         override fun subscribeForImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
             synchronized(listeners) {
