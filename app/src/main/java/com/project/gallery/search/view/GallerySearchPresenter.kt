@@ -12,7 +12,7 @@ interface GallerySearchPresenter {
 
         object Loading : State()
         object Empty : State()
-//        object NoInternet : State()
+        object NoInternet : State()
     }
 
     /**
@@ -23,9 +23,10 @@ interface GallerySearchPresenter {
         object LoadingItem : GalleryItem()
     }
 
-    interface Listener{
+    fun setListener(listener: ViewEventsListener)
+
+    interface ViewEventsListener{
         fun search(keyword: String)
         fun loadNext()
     }
-    // TODO: add listener
 }
