@@ -1,0 +1,47 @@
+package com.project.gallery.utils
+
+import com.project.gallery.search.data.repository.ImagePaginator
+import com.project.gallery.search.data.repository.ImageRepository
+
+class PushImageRepository : ImageRepository {
+
+    private val keywordToPagiantor : HashMap<String, PushImagePaginator> = HashMap()
+
+    fun push(keyword: String, newImages: List<String>){
+        keywordToPagiantor[keyword]?.push(newImages)
+    }
+
+    override fun search(keyword: String) = keywordToPagiantor.getOrPut(keyword, {PushImagePaginator()})
+
+    inner class PushImagePaginator : ImagePaginator{
+        private val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()
+
+        private var loading = false
+
+        fun push(newImages: List<String>) {
+            if (loading) {
+                synchronized(listeners){
+                    listeners.forEach {
+                        it.update(newImages)
+                    }
+                }
+            }
+        }
+
+        override fun loadNext() {
+            loading = true
+        }
+
+        override fun subscribeForImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
+            synchronized(listeners) {
+                listeners.add(listener)
+            }
+        }
+
+        override fun unsubscribeFromImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
+            synchronized(listeners) {
+                listeners.remove(listener)
+            }
+        }
+    }
+}

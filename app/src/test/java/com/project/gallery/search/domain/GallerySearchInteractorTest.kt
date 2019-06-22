@@ -5,16 +5,17 @@ package com.project.gallery.search.domain
 import com.project.gallery.search.data.repository.InMemoryImageRepository
 import com.project.gallery.search.data.repository.InMemoryImageRepository.Companion.kittens
 import com.project.gallery.search.data.repository.InMemoryImageRepository.Companion.pageSize
+import com.project.gallery.search.data.repository.InMemoryImageRepository.Companion.puppies
 import com.project.gallery.search.view.GallerySearchPresenter
 import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem
 import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.ImageItem
 import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.LoadingItem
 import com.project.gallery.search.view.GallerySearchPresenter.State.*
-import org.junit.Before
+import com.project.gallery.utils.PushImageRepository
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.inOrder
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnit
 
 class GallerySearchInteractorTest {
@@ -24,18 +25,14 @@ class GallerySearchInteractorTest {
 
     @Mock
     lateinit var presenter: GallerySearchPresenter
-    val repository = InMemoryImageRepository()
-
-    lateinit var interactor: GallerySearchInteractor
-
-    @Before
-    fun setUp() {
-        interactor = GallerySearchInteractor(repository, presenter)
-    }
+    val inMemoryImageRepository = InMemoryImageRepository()
+    val pushImageRepository = PushImageRepository()
 
     @Test
     fun `Search passes result to presenter`() {
         // Given
+        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter)
+
         val expectedLoadedState = Ready(kittens
             .take(pageSize)
             .map {
@@ -58,6 +55,8 @@ class GallerySearchInteractorTest {
     @Test
     fun `Load next request passes new result to presenter`() {
         // Given
+        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter)
+
         val expectedFirstLoadedItems = kittens
             .take(pageSize)
             .map {
@@ -86,6 +85,66 @@ class GallerySearchInteractorTest {
             verify(presenter).updateState(Ready(expectedFirstLoadedItems))
             verify(presenter).updateState(Ready(expectedLoadingState))
             verify(presenter).updateState(Ready(expectedSecondLoadedItems))
+        }
+    }
+
+    @Test
+    fun `Changing search request returns new result`(){
+        // Given
+        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter)
+
+        val expectedFirstLoadedItems = kittens
+            .take(pageSize)
+            .map {
+                ImageItem(it)
+            }
+
+        val expectedSecondLoadedItems = puppies
+            .take(pageSize)
+            .map {
+                ImageItem(it)
+            }
+
+        // When
+        interactor.start()
+        interactor.search(InMemoryImageRepository.KITTENS_KEYWORD)
+        interactor.search(InMemoryImageRepository.PUPPIES_KEYWORD)
+
+        // Then
+        inOrder(presenter).apply {
+            verify(presenter).updateState(Empty)
+            verify(presenter).updateState(Loading)
+            verify(presenter).updateState(Ready(expectedFirstLoadedItems))
+            verify(presenter).updateState(Loading)
+            verify(presenter).updateState(Ready(expectedSecondLoadedItems))
+        }
+    }
+
+    @Test
+    fun `Changing search request cancels old result`(){
+        // Given
+        val interactor = GallerySearchInteractor(pushImageRepository, presenter)
+
+        val kittensUpdate = listOf("http://kitten1.jpg", "http://kitten2.jpg")
+        val kittensLoadedItems = kittensUpdate
+            .map { ImageItem(it) }
+        val puppiesUpdate = listOf("http://puppy1.jpg", "http://puppy2.jpg")
+        val puppiesLoadedItems = puppiesUpdate
+            .map { ImageItem(it) }
+
+        // When
+        interactor.start()
+        interactor.search(InMemoryImageRepository.KITTENS_KEYWORD)
+        interactor.search(InMemoryImageRepository.PUPPIES_KEYWORD)
+        pushImageRepository.push(InMemoryImageRepository.PUPPIES_KEYWORD, puppiesUpdate)
+        pushImageRepository.push(InMemoryImageRepository.KITTENS_KEYWORD, kittensUpdate)
+
+        // Then
+        inOrder(presenter).apply {
+            verify(presenter).updateState(Empty)
+            verify(presenter, atLeastOnce()).updateState(Loading)
+            verify(presenter).updateState(Ready(puppiesLoadedItems))
+            verify(presenter, never()).updateState(Ready(kittensLoadedItems))
         }
     }
 }

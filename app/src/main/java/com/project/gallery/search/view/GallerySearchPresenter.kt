@@ -23,5 +23,9 @@ interface GallerySearchPresenter {
         object LoadingItem : GalleryItem()
     }
 
+    interface Listener{
+        fun search(keyword: String)
+        fun loadNext()
+    }
     // TODO: add listener
 }
