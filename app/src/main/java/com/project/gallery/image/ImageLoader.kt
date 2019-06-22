@@ -11,8 +11,8 @@ class ImageLoader(
     private val bitmapUrlLoader: BitmapUrlLoader
 ) {
 
-    var context: Context? = null
-    val urlToFuture: HashMap<String, Future<*>> = HashMap()
+    private var context: Context? = null
+    private val urlToFuture: HashMap<String, Future<*>> = HashMap()
 
     fun initialize(context: Context) {
         this.context = context

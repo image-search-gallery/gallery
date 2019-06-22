@@ -20,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -36,6 +41,12 @@ dependencies {
     // Mockito
     testImplementation 'org.mockito:mockito-inline:2.25.0'
     androidTestImplementation 'org.mockito:mockito-android:2.25.0'
+
+    // Robolectric
+    testImplementation 'org.robolectric:robolectric:4.3'
+
+    // Google Truth
+    testImplementation "com.google.truth:truth:0.45"
 
     // Android Test Kit
     testImplementation 'junit:junit:4.12'
