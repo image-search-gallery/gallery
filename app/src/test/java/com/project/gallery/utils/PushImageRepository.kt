@@ -5,13 +5,13 @@ import com.project.gallery.search.data.repository.ImageRepository
 
 class PushImageRepository : ImageRepository {
 
-    private val keywordToPagiantor : HashMap<String, PushImagePaginator> = HashMap()
+    private val keywordToPaginator : HashMap<String, PushImagePaginator> = HashMap()
 
     fun push(keyword: String, newImages: List<String>){
-        keywordToPagiantor[keyword]?.push(newImages)
+        keywordToPaginator[keyword]?.push(newImages)
     }
 
-    override fun search(keyword: String) = keywordToPagiantor.getOrPut(keyword, {PushImagePaginator()})
+    override fun search(keyword: String) = keywordToPaginator.getOrPut(keyword, {PushImagePaginator()})
 
     inner class PushImagePaginator : ImagePaginator{
         private val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()

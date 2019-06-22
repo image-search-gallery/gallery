@@ -2,6 +2,7 @@ package com.project.gallery.image
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.LruCache
 import android.widget.ImageView
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future
@@ -11,14 +12,29 @@ class ImageLoader(
     private val bitmapUrlLoader: BitmapUrlLoader
 ) {
 
-    private var context: Context? = null
     private val urlToFuture: HashMap<String, Future<*>> = HashMap()
+    private var lruCache: LruCache<String, Bitmap>
 
-    fun initialize(context: Context) {
-        this.context = context
+    init {
+        val maxMemoryBytes = Runtime.getRuntime().maxMemory()
+        val cacheSize = (maxMemoryBytes / 4).toInt()
+
+        lruCache = object : LruCache<String, Bitmap>(cacheSize){
+            override fun sizeOf(key: String?, value: Bitmap?): Int {
+                return value?.allocationByteCount ?: 0
+            }
+        }
     }
 
     fun load(imageUrl: String, view: ImageView) {
+
+        val cachedImage = lruCache.get(imageUrl)
+
+        cachedImage?.let {
+            setBitmapToImageView(it, view)
+            return
+        }
+
         view.tag = imageUrl
 
         val future = urlToFuture[imageUrl]
@@ -33,6 +49,8 @@ class ImageLoader(
                 if (view.tag == imageUrl) {
                     setBitmapToImageView(it, view)
                 }
+
+                lruCache.put(imageUrl, it)
             }
         }
     }
