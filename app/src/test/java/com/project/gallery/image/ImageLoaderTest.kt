@@ -4,6 +4,7 @@ package com.project.gallery.image
 
 import android.widget.ImageView
 import com.google.common.truth.Truth.assertThat
+import com.project.gallery.utils.TestBitmapUrlLoader
 import com.project.gallery.utils.TestExecutorService
 import org.junit.Test
 import org.junit.runner.RunWith

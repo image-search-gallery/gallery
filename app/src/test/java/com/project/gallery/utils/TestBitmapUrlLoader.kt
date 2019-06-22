@@ -1,4 +1,4 @@
-package com.project.gallery.image
+package com.project.gallery.utils
 
 import android.graphics.Bitmap
 import com.project.gallery.image.BitmapUrlLoader
