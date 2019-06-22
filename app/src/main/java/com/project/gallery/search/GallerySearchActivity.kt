@@ -1,17 +1,18 @@
-package com.project.gallery
+package com.project.gallery.search
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.activity_scrolling.*
+import com.project.gallery.R
+import kotlinx.android.synthetic.main.gallery_search_activity.*
 
-class ScrollingActivity : AppCompatActivity() {
+class GallerySearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scrolling)
+        setContentView(R.layout.gallery_search_activity)
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
