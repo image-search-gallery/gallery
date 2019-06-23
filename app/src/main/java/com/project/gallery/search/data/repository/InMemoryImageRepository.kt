@@ -33,7 +33,7 @@ class InMemoryImageRepository : ImageRepository {
         return InMemoryImagePaginator(keyword)
     }
 
-    inner class InMemoryImagePaginator(val keyword: String) : ImagePaginator {
+    inner class InMemoryImagePaginator(private val keyword: String) : ImagePaginator {
 
         private val maxImageCollectionIndex = when (keyword) {
             KITTENS_KEYWORD -> kittens.size - 1
