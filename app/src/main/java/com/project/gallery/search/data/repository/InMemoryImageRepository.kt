@@ -16,7 +16,7 @@ class InMemoryImageRepository : ImageRepository {
             "https://pbs.twimg.com/profile_images/694718778911764480/3dH7jGTE_400x400.jpg"
         )}
 
-        val puppies = (0..20).flatMap { listOf(
+        val puppies = (0..100).flatMap { listOf(
             "https://2puppies.com/api/media/cache/listing_small/1556478855_1501573615cc5fb87d627a8.15042060.jpeg",
             "https://www.parkerspreciouspuppies.com/_Media/paris6-parkerspreciouspuppi_hr.jpeg",
             "https://www.pets4homes.co.uk/images/classifieds/2016/02/24/1212031/large/golden-retriever-puppies-for-sale-56cda0857c9fe.jpg",
