@@ -1,9 +1,10 @@
 package com.project.gallery.image
 
-import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import android.util.LruCache
 import android.widget.ImageView
+import java.io.IOException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future
 
@@ -19,7 +20,7 @@ class ImageLoader(
         val maxMemoryBytes = Runtime.getRuntime().maxMemory()
         val cacheSize = (maxMemoryBytes / 4).toInt()
 
-        lruCache = object : LruCache<String, Bitmap>(cacheSize){
+        lruCache = object : LruCache<String, Bitmap>(cacheSize) {
             override fun sizeOf(key: String?, value: Bitmap?): Int {
                 return value?.allocationByteCount ?: 0
             }
@@ -43,14 +44,20 @@ class ImageLoader(
         }
 
         urlToFuture[imageUrl] = executor.submit {
-            val bitmap = bitmapUrlLoader.load(imageUrl)
+            try {
+                val bitmap = bitmapUrlLoader.load(imageUrl)
 
-            bitmap?.let {
-                if (view.tag == imageUrl) {
-                    setBitmapToImageView(it, view)
+                bitmap?.let {
+                    if (view.tag == imageUrl) {
+                        setBitmapToImageView(it, view)
+                    }
+
+                    lruCache.put(imageUrl, it)
                 }
-
-                lruCache.put(imageUrl, it)
+            } catch (e: Exception) {
+                Log.e("ImageLoader", e.message)
+                Log.e("ImageLoader", "Failing URL: $imageUrl")
+                e.printStackTrace()
             }
         }
     }
