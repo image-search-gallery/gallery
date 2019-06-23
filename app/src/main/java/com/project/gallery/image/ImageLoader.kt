@@ -20,8 +20,8 @@ class ImageLoader(
         val cacheSize = (maxMemoryBytes / 4).toInt()
 
         lruCache = object : LruCache<String, Bitmap>(cacheSize) {
-            override fun sizeOf(key: String?, value: Bitmap?): Int {
-                return value?.allocationByteCount ?: 0
+            override fun sizeOf(key: String, value: Bitmap): Int {
+                return value.allocationByteCount
             }
         }
     }
@@ -31,7 +31,7 @@ class ImageLoader(
         val cachedImage = lruCache.get(imageUrl)
 
         cachedImage?.let {
-            setBitmapToImageView(it, view)
+            view.setImageBitmap(it)
             return
         }
 
@@ -40,20 +40,20 @@ class ImageLoader(
         view.tag = imageUrl
 
         val future = imageViewToFuture[view]
-        future?.let {
-            it.cancel(true)
-        }
+        future?.cancel(true)
 
         imageViewToFuture[view] = executor.submit {
             try {
                 val bitmap = bitmapUrlLoader.load(imageUrl)
 
-                bitmap?.let {
-                    if (view.tag == imageUrl) {
-                        setBitmapToImageView(it, view)
-                    }
+                view.post {
+                    bitmap?.let {
+                        if (view.tag == imageUrl) {
+                            view.setImageBitmap(bitmap)
+                        }
 
-                    lruCache.put(imageUrl, it)
+                        lruCache.put(imageUrl, it)
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("ImageLoader", e.message)
@@ -63,9 +63,4 @@ class ImageLoader(
         }
     }
 
-    private fun setBitmapToImageView(bitmap: Bitmap, view: ImageView) {
-        view.post {
-            view.setImageBitmap(bitmap)
-        }
-    }
 }

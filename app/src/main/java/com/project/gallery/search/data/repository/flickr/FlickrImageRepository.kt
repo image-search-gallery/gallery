@@ -69,11 +69,7 @@ class FlickrImageRepository(
                     totalPages = resultPages
                     currentImageUrls = currentImageUrls + resultImages
 
-                    synchronized(listeners) {
-                        listeners.forEach {
-                            it.update(currentImageUrls)
-                        }
-                    }
+                    notifyListeners()
 
                     currentPage++
                 } catch (e: IOException) {
@@ -82,10 +78,20 @@ class FlickrImageRepository(
             }
         }
 
+        private fun notifyListeners() {
+            synchronized(listeners) {
+                listeners.forEach {
+                    it.update(currentImageUrls)
+                }
+            }
+        }
+
         override fun subscribeForImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
             synchronized(listeners) {
                 listeners.add(listener)
             }
+
+            notifyListeners()
         }
 
         override fun unsubscribeFromImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
