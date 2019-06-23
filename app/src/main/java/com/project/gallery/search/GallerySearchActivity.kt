@@ -7,6 +7,7 @@ import com.project.gallery.search.data.repository.InMemoryImageRepository
 import com.project.gallery.search.data.repository.flickr.FlickrImageRepository
 import com.project.gallery.search.data.repository.flickr.JsonResponseDeserializer
 import com.project.gallery.search.domain.GallerySearchInteractor
+import com.project.gallery.search.view.GallerySearchPresenter
 import com.project.gallery.utils.Throttler
 import kotlinx.android.synthetic.main.gallery_search_activity.*
 import java.util.concurrent.Executors
@@ -19,11 +20,16 @@ class GallerySearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gallery_search_activity)
 
-        interactor = GallerySearchInteractor(
-            FlickrImageRepository(JsonResponseDeserializer(), Executors.newCachedThreadPool()),
+        interactor = GallerySearchScope(
             gallerySearchView,
-            Throttler(100)
-        )
+            ApplicationScope
+        ).interactor
+
+//        interactor = GallerySearchInteractor(
+//            FlickrImageRepository(JsonResponseDeserializer(), Executors.newCachedThreadPool()),
+//            gallerySearchView,
+//            Throttler(100)
+//        )
     }
 
     override fun onStart() {
@@ -35,4 +41,27 @@ class GallerySearchActivity : AppCompatActivity() {
         super.onStop()
         interactor.stop()
     }
+}
+
+object ApplicationScope {
+
+    val repository by lazy {
+        FlickrImageRepository(JsonResponseDeserializer(), Executors.newCachedThreadPool())
+    }
+
+}
+
+class GallerySearchScope(
+    private val presenter: GallerySearchPresenter,
+    private val applicationScope: ApplicationScope
+) {
+
+    val interactor by lazy {
+        GallerySearchInteractor(
+            applicationScope.repository,
+            presenter,
+            Throttler(100)
+        )
+    }
+
 }

@@ -18,6 +18,9 @@ class FlickrImageRepository(
         private const val API_KEY = "3e7cc266ae2b0e0d78e279ce8e361736"
     }
 
+    private var lastSearchKeyword: String? = null
+    private var lastPaginator: FlickrImagePaginator? = null
+
     private fun buildUrl(keyword: String, pageNumber: Int): URL {
         return URL(
             "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=$API_KEY&format=json&nojsoncallback=1&safe_search=1&page=$pageNumber&text=${URLEncoder.encode(
@@ -40,7 +43,16 @@ class FlickrImageRepository(
         }
     }
 
-    override fun search(keyword: String) = FlickrImagePaginator(keyword)
+    override fun search(keyword: String): FlickrImagePaginator {
+        val existingSearch = lastSearchKeyword
+        val existingPaginator = lastPaginator
+        if (keyword == existingSearch && existingPaginator != null) {
+            return existingPaginator
+        }
+
+        lastSearchKeyword = keyword
+        return FlickrImagePaginator(keyword).also { lastPaginator = it }
+    }
 
     inner class FlickrImagePaginator(private val keyword: String) : ImagePaginator {
         private val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()
