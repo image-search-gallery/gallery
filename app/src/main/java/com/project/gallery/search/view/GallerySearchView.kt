@@ -73,7 +73,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s != null && s.isNotEmpty()) {
+                if (s != null) {
                     viewEventsListener?.search(s.toString())
                 }
             }
