@@ -45,7 +45,7 @@ class FlickrImageRepository(
     inner class FlickrImagePaginator(private val keyword: String) : ImagePaginator {
         private val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()
 
-        private val currentImageUrls = arrayListOf<String>()
+        private var currentImageUrls = listOf<String>()
 
         private var currentPage = 0
         private var totalPages = Int.MAX_VALUE
@@ -67,7 +67,7 @@ class FlickrImageRepository(
 
                     currentPage = resultPage
                     totalPages = resultPages
-                    currentImageUrls += resultImages
+                    currentImageUrls = currentImageUrls + resultImages
 
                     synchronized(listeners) {
                         listeners.forEach {
