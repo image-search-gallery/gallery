@@ -38,10 +38,10 @@ class ImageLoader(
 
         view.tag = imageUrl
 
-        val future = urlToFuture[imageUrl]
-        future?.let {
-            it.cancel(true)
-        }
+//        val future = urlToFuture[imageUrl]
+//        future?.let {
+//            it.cancel(true)
+//        }
 
         urlToFuture[imageUrl] = executor.submit {
             try {

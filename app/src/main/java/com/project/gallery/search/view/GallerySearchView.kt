@@ -57,15 +57,17 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
     }
 
     override fun updateState(state: State) {
-        when (state) {
-            is Ready -> {
-                showSearchResult()
-                itemsAdapter.setItems(state.images)
-            }
+        post {
+            when (state) {
+                is Ready -> {
+                    showSearchResult()
+                    itemsAdapter.setItems(state.images)
+                }
 
-            is NoInternet -> showNoInternet()
-            is Empty -> showEmpty()
-            is Loading -> showInitialLoading()
+                is NoInternet -> showNoInternet()
+                is Empty -> showEmpty()
+                is Loading -> showInitialLoading()
+            }
         }
     }
 
@@ -144,7 +146,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
         override fun getItemId(position: Int) = items[position].hashCode().toLong()
 
         override fun getItemViewType(position: Int): Int {
-            return when(items[position]){
+            return when (items[position]) {
                 is GalleryItem.ImageItem -> READY_ITEM_TYPE
                 is GalleryItem.LoadingItem -> LOADING_ITEM_TYPE
             }
@@ -160,7 +162,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
             }
         }
 
-        fun setItems(items: List<GalleryItem>){
+        fun setItems(items: List<GalleryItem>) {
             this.items = items
             notifyDataSetChanged()
         }
