@@ -64,13 +64,23 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
             }
 
             is NoInternet -> showNoInternet()
+            is Empty -> showEmpty()
             is Loading -> showInitialLoading()
         }
+    }
+
+    private fun showEmpty() {
+        gallerySearchGrid.visibility = GONE
+        noInternet.visibility = GONE
+        initialLoading.visibility = GONE
+
+        emptyResult.visibility = VISIBLE
     }
 
     private fun showInitialLoading() {
         gallerySearchGrid.visibility = GONE
         noInternet.visibility = GONE
+        emptyResult.visibility = GONE
 
         initialLoading.visibility = VISIBLE
     }
@@ -78,6 +88,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
     private fun showNoInternet() {
         initialLoading.visibility = GONE
         gallerySearchGrid.visibility = GONE
+        emptyResult.visibility = GONE
 
         noInternet.visibility = VISIBLE
     }
@@ -85,6 +96,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
     private fun showSearchResult() {
         noInternet.visibility = GONE
         initialLoading.visibility = GONE
+        emptyResult.visibility = GONE
 
         gallerySearchGrid.visibility = VISIBLE
     }
