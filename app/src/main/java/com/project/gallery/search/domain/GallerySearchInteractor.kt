@@ -29,6 +29,10 @@ class GallerySearchInteractor(
     }
 
     override fun search(keyword: String) {
+        if (keyword.length < 3) {
+            return
+        }
+
         presenter.updateState(Loading)
 
         val imagePaginator = repository.search(keyword)

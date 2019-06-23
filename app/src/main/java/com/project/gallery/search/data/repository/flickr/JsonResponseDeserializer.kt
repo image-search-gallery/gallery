@@ -20,7 +20,7 @@ class JsonResponseDeserializer {
             val imageId = photoDetails.getString("id")
             val secret = photoDetails.getString("secret")
 
-            val imageUrl = "http://farm$farm.static.flickr.com/$server/{$imageId}_$secret.jpg"
+            val imageUrl = "https://farm$farm.static.flickr.com/$server/${imageId}_$secret.jpg"
 
             images.add(imageUrl)
         }
