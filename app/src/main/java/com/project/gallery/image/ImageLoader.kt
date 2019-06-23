@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.util.Log
 import android.util.LruCache
 import android.widget.ImageView
-import java.io.IOException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future
 
@@ -13,7 +12,7 @@ class ImageLoader(
     private val bitmapUrlLoader: BitmapUrlLoader
 ) {
 
-    private val urlToFuture: HashMap<String, Future<*>> = HashMap()
+    private val imageViewToFuture: HashMap<ImageView, Future<*>> = HashMap()
     private var lruCache: LruCache<String, Bitmap>
 
     init {
@@ -38,12 +37,12 @@ class ImageLoader(
 
         view.tag = imageUrl
 
-//        val future = urlToFuture[imageUrl]
-//        future?.let {
-//            it.cancel(true)
-//        }
+        val future = imageViewToFuture[view]
+        future?.let {
+            it.cancel(true)
+        }
 
-        urlToFuture[imageUrl] = executor.submit {
+        imageViewToFuture[view] = executor.submit {
             try {
                 val bitmap = bitmapUrlLoader.load(imageUrl)
 
