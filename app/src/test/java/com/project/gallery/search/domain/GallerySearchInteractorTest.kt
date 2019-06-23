@@ -147,4 +147,16 @@ class GallerySearchInteractorTest {
             verify(presenter, never()).updateState(Ready(kittensLoadedItems))
         }
     }
+
+    @Test
+    fun `Starting interactor sets listener for presenter`(){
+        // Given
+        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter)
+
+        // When
+        interactor.start()
+
+        // Then
+        verify(presenter).setListener(interactor)
+    }
 }
