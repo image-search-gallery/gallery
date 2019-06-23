@@ -9,29 +9,29 @@ class InMemoryImageRepository : ImageRepository {
 
 
         val kittens = listOf(
-            "https://shop-cdn-m.shpp.ext.zooplus.io/bilder/royal/canin/maine/coon/kitten/9/400/rc_maincoonk_9.jpg",
-            "http://powerfulmind.co/wp-content/uploads/2019/02/maine-coon-kittens-37-5c34c902b5aa5__700.jpg",
-            "https://www.thehappycatsite.com/wp-content/uploads/2017/12/maine-coon-kittens.jpg",
-            "http://www.cascademountain.net/kittens/dec-15/5-2-16.jpg",
-            "https://image.jimcdn.com/app/cms/image/transf/dimension=910x10000:format=jpg/path/sa855c229b4088494/image/i1782b70780124ebe/version/1499385450/extra-large-maine-coon-kittens-for-sale.jpg",
-            "https://saltycoons.com/wp-content/uploads/2018/04/5AFCF968-3084-45B2-A914-1D42B752D58C.jpeg",
-            "https://imgc.allpostersimages.com/img/print/poster/mark-taylor-two-maine-coon-kittens-8-weeks-one-with-its-paw-raised_a-G-10574993-14258389.jpg",
-            "https://9b16f79ca967fd0708d1-2713572fef44aa49ec323e813b06d2d9.ssl.cf2.rackcdn.com/1140x_a10-7_cTC/20190122lf-Cats04-2-1549061487.jpg",
-            "https://www.draegerparis.com/6115307-large_default/lara-maine-coon-kitten.jpg",
-            "http://fallinpets.com/wp-content/uploads/2016/12/Adorable-Maine-Coon-Kitten.jpg"
+            "https://pbs.twimg.com/profile_images/638743277865271297/3pSO-2xR_400x400.jpg",
+            "http://www.faydark-coon.com/images/photos/2/allywood-loretta-1.jpg",
+            "http://faydark-coon.com/images/photos/11/faydark-blackberry-1.jpg",
+            "http://www.faydark-coon.com/images/photos/351/faydark-glorfindel-32.jpg",
+            "http://www.tiltingtowardwindmills.com/wp-content/uploads/2018/11/Sure-Seems-Like-Monday-256x256.jpg",
+            "http://search.lostpetusa.net/petimages/256/69479d5b-df04-49eb-ae13-f2f1d89defdc.jpg",
+            "https://i.pinimg.com/originals/3b/8b/b9/3b8bb9d93cc193af1e351fe77ab950da.jpg",
+            "http://www.tiltingtowardwindmills.com/wp-content/uploads/2017/09/Sid-too-big-to-fit-2-256x256.jpg",
+            "https://img.olx.com.br/thumbs256x256/45/457929002900798.jpg",
+            "https://cdn6.aptoide.com/imgs/a/9/c/a9ca0834d77090715966ee161600e5e4_icon.png?w=256"
         )
 
         val puppies = listOf(
-            "http://www.mishkaranch.com/photos/Turre_1.jpg",
-            "https://gfp-2a3tnpzj.stackpathdns.com/wp-content/uploads/2016/07/Alaskan-Malamute-2.jpg",
-            "https://s3.envato.com/files/253707280/2016_198_0302_P.jpg",
-            "https://render.fineartamerica.com/images/rendered/default/metal-print/10.000/6.625/break/images-medium-5/alaskan-malamute-puppies-playing-in-garden-kurapatka.jpg",
-            "https://teja8.kuikr.com/i4/20190520/Alaskan-malamute-puppies-available-VB201705171774173-ak_LWBP90877995-1558337853.jpeg",
-            "https://i.ytimg.com/vi/YXxG0Xk3708/maxresdefault.jpg",
-            "https://i0.wp.com/doglers.com/wp-content/uploads/2016/02/Alaskan-Malamute-Puppy-Photo.jpg",
-            "https://cdn3-www.dogtime.com/assets/uploads/2019/05/alaskan-malamute-puppy-1.jpg",
-            "https://www.europuppy.com/wp-content/uploads/2019/01/UA3801alm181023_F1_1.jpg",
-            "http://www.cascademalamutes.com/uploads/8/2/9/1/82910972/max25.jpg"
+            "https://2puppies.com/api/media/cache/listing_small/1556478855_1501573615cc5fb87d627a8.15042060.jpeg",
+            "http://www.parkerspreciouspuppies.com/_Media/paris6-parkerspreciouspuppi_hr.jpeg",
+            "https://www.pets4homes.co.uk/images/classifieds/2016/02/24/1212031/large/golden-retriever-puppies-for-sale-56cda0857c9fe.jpg",
+            "https://is2-ssl.mzstatic.com/image/thumb/Purple/v4/d1/b0/15/d1b01506-c05f-021f-c7b5-35cb48e8c2d4/source/256x256bb.jpg",
+            "https://mishkanasevere.com/wp-content/uploads/2018/07/QuinoaCookies-thegem-post-thumb-large.jpg",
+            "https://www.wildcoyotefarm.com/uploads/7/1/0/8/71089429/img-2429.jpg",
+            "http://www.parkerspreciouspuppies.com/_Media/brianna5-parkerspreciouspup_hr.jpeg",
+            "https://petergreenberg.com/wp-content/uploads/2008/07/puppy-dog.jpg",
+            "http://heatherwoodgoldens.com/sitebuilder/images/7_weeks0-256x256.jpg",
+            "https://www.cheatlakevets.com/wp-content/uploads/2019/01/great-outdoorsman.jpg"
         )
     }
 
