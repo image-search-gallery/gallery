@@ -1,5 +1,6 @@
 package com.project.gallery.search.domain
 
+import android.util.Log
 import com.project.gallery.search.data.repository.ImagePaginator
 import com.project.gallery.search.data.repository.ImageRepository
 import com.project.gallery.search.view.GallerySearchPresenter
@@ -8,6 +9,7 @@ import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.Loadin
 import com.project.gallery.search.view.GallerySearchPresenter.State
 import com.project.gallery.search.view.GallerySearchPresenter.State.*
 import com.project.gallery.utils.Throttler
+import java.util.concurrent.atomic.AtomicBoolean
 
 class GallerySearchInteractor(
     private val repository: ImageRepository,
@@ -17,54 +19,73 @@ class GallerySearchInteractor(
 
     private var currentState: State = Empty
     private var currentPaginator: ImagePaginator? = null
-    private var currentImageUpdatesListener: ImagePaginator.ImageUpdatesListener? = null
+    private val currentImageUpdatesListener = ImageUpdatesListenerImpl()
+
+    private var loading = AtomicBoolean(false)
 
     fun start() {
         presenter.setListener(this)
         presenter.updateState(Empty)
+
+        currentPaginator?.subscribeForImageUpdates(currentImageUpdatesListener)
     }
 
     fun stop() {
-
+        unsubscribe()
     }
 
     override fun search(keyword: String) {
+        loading.compareAndSet(false, true)
+
         if (keyword.length < 3) {
+            presenter.updateState(Empty)
+
             return
         }
 
-        presenter.updateState(Loading)
 
-        val imagePaginator = repository.search(keyword)
-        val paginatorListener = ImageUpdatesListenerImpl()
+        throttler.submit {
 
-        imagePaginator.subscribeForImageUpdates(paginatorListener)
+            presenter.updateState(Loading)
+            val imagePaginator = repository.search(keyword)
+            val paginatorListener = ImageUpdatesListenerImpl()
 
-        imagePaginator.loadNext()
+            unsubscribe()
+            imagePaginator.subscribeForImageUpdates(paginatorListener)
 
-        currentImageUpdatesListener?.let {
-            currentPaginator?.unsubscribeFromImageUpdates(it)
+            imagePaginator.loadNext()
+
+
+            currentPaginator = imagePaginator
         }
+    }
 
-        currentPaginator = imagePaginator
-        currentImageUpdatesListener = paginatorListener
+    private fun unsubscribe() {
+        currentPaginator?.unsubscribeFromImageUpdates(currentImageUpdatesListener)
     }
 
     override fun loadNext() {
-        throttler.submit {
+
+        if (!loading.get()) {
             val state = currentState
             if (state is Ready) {
                 presenter.updateState(Ready(state.images + LoadingItem))
             }
 
+            Log.d("WTF", "Interactor load next")
             currentPaginator?.loadNext()
+
+            loading.compareAndSet(false, true)
         }
+
     }
 
     inner class ImageUpdatesListenerImpl : ImagePaginator.ImageUpdatesListener {
         override fun update(imageUrls: List<String>) {
             currentState = Ready(imageUrls.map { ImageItem(it) })
             presenter.updateState(currentState)
+
+            loading.compareAndSet(true, false)
         }
     }
 }

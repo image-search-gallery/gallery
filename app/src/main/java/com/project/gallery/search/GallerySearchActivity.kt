@@ -29,6 +29,10 @@ class GallerySearchActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         interactor.start()
-//        interactor.search(InMemoryImageRepository.KITTENS_KEYWORD)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        interactor.stop()
     }
 }

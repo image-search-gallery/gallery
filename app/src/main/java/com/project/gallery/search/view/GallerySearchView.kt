@@ -51,8 +51,12 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
                     val totalItemCount = layoutManager?.itemCount ?: 0
                     val lastVisible = (layoutManager as GridLayoutManager).findLastVisibleItemPosition()
 
-                    val endHasBeenReached = lastVisible + REMAINING_ITEMS_BEFORE_NEXT_LOAD >= totalItemCount
+                    val endHasBeenReached = lastVisible == totalItemCount - 1
                     if (totalItemCount > 0 && endHasBeenReached) {
+                        Log.d("WTF", "totalItemCount=$totalItemCount")
+                        Log.d("WTF", "lastVisible=$lastVisible")
+                        Log.d("WTF", "endHasBeenReached=$endHasBeenReached")
+                        Log.d("WTF", "loadNext")
                         viewEventsListener?.loadNext()
                     }
                 }
@@ -138,7 +142,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
         private val inflater: LayoutInflater = LayoutInflater.from(context)
 
         init {
-            setHasStableIds(true)
+//            setHasStableIds(true)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -164,7 +168,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
         override fun getItemCount() = items.size
 
-        override fun getItemId(position: Int) = items[position].hashCode().toLong()
+//        override fun getItemId(position: Int) = items[position].hashCode().toLong()
 
         override fun getItemViewType(position: Int): Int {
             return when (items[position]) {
