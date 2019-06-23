@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,6 +78,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
     override fun updateState(state: State) {
         post {
+            Log.d("WTF", state.toString())
             when (state) {
                 is Ready -> {
                     showSearchResult()
@@ -178,6 +180,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
             when (holder) {
                 is SearchResultImageViewHolder -> holder.setViewModel(items[position] as GalleryItem.ImageItem)
+                else -> Log.d("WTF", "loading item")
             }
         }
 
