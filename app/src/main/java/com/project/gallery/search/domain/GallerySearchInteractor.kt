@@ -11,13 +11,14 @@ import com.project.gallery.search.view.GallerySearchPresenter.State.*
 class GallerySearchInteractor(
     private val repository: ImageRepository,
     private val presenter: GallerySearchPresenter
-) : GallerySearchPresenter.Listener {
+) : GallerySearchPresenter.ViewEventsListener {
 
     private var currentState: State = Empty
     private var currentPaginator: ImagePaginator? = null
     private var currentImageUpdatesListener: ImagePaginator.ImageUpdatesListener? = null
 
     fun start() {
+        presenter.setListener(this)
         presenter.updateState(Empty)
     }
 
