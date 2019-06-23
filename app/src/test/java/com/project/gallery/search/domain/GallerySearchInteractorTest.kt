@@ -12,6 +12,7 @@ import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.ImageI
 import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.LoadingItem
 import com.project.gallery.search.view.GallerySearchPresenter.State.*
 import com.project.gallery.utils.PushImageRepository
+import com.project.gallery.utils.Throttler
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
@@ -27,11 +28,12 @@ class GallerySearchInteractorTest {
     lateinit var presenter: GallerySearchPresenter
     val inMemoryImageRepository = InMemoryImageRepository()
     val pushImageRepository = PushImageRepository()
+    val throttler = Throttler(0)
 
     @Test
     fun `Search passes result to presenter`() {
         // Given
-        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter)
+        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter, throttler)
 
         val expectedLoadedState = Ready(kittens
             .take(pageSize)
@@ -55,7 +57,7 @@ class GallerySearchInteractorTest {
     @Test
     fun `Load next request passes new result to presenter`() {
         // Given
-        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter)
+        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter, throttler)
 
         val expectedFirstLoadedItems = kittens
             .take(pageSize)
@@ -91,7 +93,7 @@ class GallerySearchInteractorTest {
     @Test
     fun `Changing search request returns new result`(){
         // Given
-        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter)
+        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter, throttler)
 
         val expectedFirstLoadedItems = kittens
             .take(pageSize)
@@ -123,7 +125,7 @@ class GallerySearchInteractorTest {
     @Test
     fun `Changing search request cancels old result`(){
         // Given
-        val interactor = GallerySearchInteractor(pushImageRepository, presenter)
+        val interactor = GallerySearchInteractor(pushImageRepository, presenter, Throttler(0))
 
         val kittensUpdate = listOf("http://kitten1.jpg", "http://kitten2.jpg")
         val kittensLoadedItems = kittensUpdate
@@ -151,7 +153,7 @@ class GallerySearchInteractorTest {
     @Test
     fun `Starting interactor sets listener for presenter`(){
         // Given
-        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter)
+        val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter, throttler)
 
         // When
         interactor.start()

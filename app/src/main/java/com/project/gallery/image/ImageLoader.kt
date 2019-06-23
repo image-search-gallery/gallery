@@ -35,6 +35,8 @@ class ImageLoader(
             return
         }
 
+        view.setImageDrawable(null)
+
         view.tag = imageUrl
 
         val future = imageViewToFuture[view]

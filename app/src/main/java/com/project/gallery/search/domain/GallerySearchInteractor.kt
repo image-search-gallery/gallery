@@ -7,10 +7,12 @@ import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.ImageI
 import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.LoadingItem
 import com.project.gallery.search.view.GallerySearchPresenter.State
 import com.project.gallery.search.view.GallerySearchPresenter.State.*
+import com.project.gallery.utils.Throttler
 
 class GallerySearchInteractor(
     private val repository: ImageRepository,
-    private val presenter: GallerySearchPresenter
+    private val presenter: GallerySearchPresenter,
+    private val throttler: Throttler
 ) : GallerySearchPresenter.ViewEventsListener {
 
     private var currentState: State = Empty
@@ -45,12 +47,14 @@ class GallerySearchInteractor(
     }
 
     override fun loadNext() {
-        val state = currentState
-        if (state is Ready) {
-            presenter.updateState(Ready(state.images + LoadingItem))
-        }
+        throttler.submit {
+            val state = currentState
+            if (state is Ready) {
+                presenter.updateState(Ready(state.images + LoadingItem))
+            }
 
-        currentPaginator?.loadNext()
+            currentPaginator?.loadNext()
+        }
     }
 
     inner class ImageUpdatesListenerImpl : ImagePaginator.ImageUpdatesListener {
