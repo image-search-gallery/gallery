@@ -39,7 +39,8 @@ class GallerySearchInteractor(
 
         if (keyword.length < 3) {
             presenter.updateState(Empty)
-
+            unsubscribe()
+            currentPaginator = null
             return
         }
 
@@ -48,10 +49,9 @@ class GallerySearchInteractor(
 
             presenter.updateState(Loading)
             val imagePaginator = repository.search(keyword)
-            val paginatorListener = ImageUpdatesListenerImpl()
 
             unsubscribe()
-            imagePaginator.subscribeForImageUpdates(paginatorListener)
+            imagePaginator.subscribeForImageUpdates(currentImageUpdatesListener)
 
             imagePaginator.loadNext()
 
