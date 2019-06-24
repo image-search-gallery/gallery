@@ -45,10 +45,9 @@ class ImageLoader(
                         lruCache.put(imageUrl, it)
                     }
                 }
-            } catch (e: Exception) {
-                Log.e("ImageLoader", e.message)
-                Log.e("ImageLoader", "Failing URL: $imageUrl")
-                e.printStackTrace()
+            } catch (exception: Exception) {
+                Log.e(ImageLoader::class.java.simpleName, exception.message)
+                exception.printStackTrace()
             }
         }
     }

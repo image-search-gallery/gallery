@@ -1,6 +1,5 @@
 package com.project.gallery.search.domain
 
-import android.util.Log
 import com.project.gallery.search.data.repository.ImagePaginator
 import com.project.gallery.search.data.repository.ImageRepository
 import com.project.gallery.search.view.GallerySearchPresenter
@@ -9,7 +8,6 @@ import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.Loadin
 import com.project.gallery.search.view.GallerySearchPresenter.State
 import com.project.gallery.search.view.GallerySearchPresenter.State.*
 import com.project.gallery.utils.Throttler
-import java.lang.Exception
 import java.util.concurrent.atomic.AtomicBoolean
 
 class GallerySearchInteractor(
