@@ -28,7 +28,6 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
     companion object {
         private const val GRID_COLUMN_COUNT = 3
-        private const val REMAINING_ITEMS_BEFORE_NEXT_LOAD = 3 * GRID_COLUMN_COUNT
         private const val EXECUTORS_POOL_SIZE = 3
     }
 

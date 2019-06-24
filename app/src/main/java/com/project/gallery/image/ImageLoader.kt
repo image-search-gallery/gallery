@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import android.util.LruCache
 import android.widget.ImageView
+import com.project.gallery.R
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future
 
@@ -35,7 +36,7 @@ class ImageLoader(
             return
         }
 
-        view.setImageDrawable(null)
+        view.setImageResource(R.drawable.ic_image_place_holder)
 
         view.tag = imageUrl
 
