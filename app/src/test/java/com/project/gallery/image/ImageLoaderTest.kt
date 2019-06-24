@@ -3,8 +3,10 @@
 package com.project.gallery.image
 
 import android.graphics.Bitmap
+import android.util.LruCache
 import android.widget.ImageView
 import com.google.common.truth.Truth.assertThat
+import com.project.gallery.ApplicationComponent
 import com.project.gallery.utils.TestExecutorService
 import com.project.gallery.utils.willReturn
 import org.junit.Before
@@ -30,9 +32,20 @@ class ImageLoaderTest {
 
     @Before
     fun setUp(){
-        imageLoader = ImageLoader(TestExecutorService(), bitmapUrlLoader)
+        imageLoader = ImageLoader(TestExecutorService(), bitmapUrlLoader, getBitmapLruCache())
 
         bitmapUrlLoader.load(anyString()) willReturn Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+    }
+
+    private fun getBitmapLruCache() : LruCache<String, Bitmap> {
+        val maxMemoryBytes = Runtime.getRuntime().maxMemory()
+        val cacheSize = (maxMemoryBytes / 4).toInt()
+
+        return object : LruCache<String, Bitmap>(cacheSize) {
+            override fun sizeOf(key: String, value: Bitmap): Int {
+                return value.allocationByteCount
+            }
+        }
     }
 
     @Test

@@ -38,6 +38,8 @@ class PushImageRepository : ImageRepository {
             loading = true
         }
 
+        override fun hasNext() = true
+
         override fun subscribeForImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
             synchronized(listeners) {
                 listeners.add(listener)
