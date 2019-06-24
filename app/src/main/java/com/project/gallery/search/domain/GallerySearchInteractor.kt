@@ -25,6 +25,7 @@ class GallerySearchInteractor(
     private var loading = AtomicBoolean(false)
 
     fun start() {
+        println("Start")
         presenter.setListener(this)
         presenter.updateState(Empty)
 
@@ -73,7 +74,6 @@ class GallerySearchInteractor(
                 presenter.updateState(Ready(state.images + LoadingItem))
             }
 
-            Log.d("WTF", "Interactor load next")
             currentPaginator?.loadNext()
 
             loading.compareAndSet(false, true)
@@ -90,6 +90,7 @@ class GallerySearchInteractor(
         }
 
         override fun onError(error: Exception) {
+            println("On Error")
             presenter.updateState(Failed)
         }
     }
