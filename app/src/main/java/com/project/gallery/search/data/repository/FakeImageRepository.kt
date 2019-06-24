@@ -1,9 +1,13 @@
 package com.project.gallery.search.data.repository
 
 /**
- * [InMemoryImagePaginator] provided by this implementation isn't thread safe.
+ * [ImageRepository] implementation which uses hard-coded URLs.
+ * Search is possible for the following keywords: [PUPPIES_KEYWORD], [KITTENS_KEYWORD]. Any other search request will
+ * result in empty list.
+ * Used mainly in testing.
+ * [FakeImagePaginator] provided by this implementation isn't thread safe.
  */
-class InMemoryImageRepository : ImageRepository {
+class FakeImageRepository : ImageRepository {
 
     companion object {
         const val PUPPIES_KEYWORD = "puppies"
@@ -36,10 +40,13 @@ class InMemoryImageRepository : ImageRepository {
     }
 
     override fun search(keyword: String): ImagePaginator {
-        return InMemoryImagePaginator(keyword)
+        return FakeImagePaginator(keyword)
     }
 
-    inner class InMemoryImagePaginator(private val keyword: String) : ImagePaginator {
+    /**
+     * [ImagePaginator] implementation which uses hard-coded strings as a search result.
+     */
+    inner class FakeImagePaginator(private val keyword: String) : ImagePaginator {
 
         private val maxImageCollectionIndex = when (keyword) {
             KITTENS_KEYWORD -> kittens.size - 1
@@ -59,7 +66,7 @@ class InMemoryImageRepository : ImageRepository {
             listeners.forEach {
                 val newNextImageIndex = nextImageIndex + pageSize
                 nextImageIndex = if (hasNext()) newNextImageIndex else maxImageCollectionIndex
-                it.update(
+                it.onUpdate(
                     when (keyword) {
                         KITTENS_KEYWORD -> kittens.subList(0, nextImageIndex)
                         PUPPIES_KEYWORD -> puppies.subList(0, nextImageIndex)

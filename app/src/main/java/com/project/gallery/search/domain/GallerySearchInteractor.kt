@@ -10,6 +10,9 @@ import com.project.gallery.search.view.GallerySearchPresenter.State.*
 import com.project.gallery.utils.Throttler
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * Contains business logic for [GallerySearchPresenter].
+ */
 class GallerySearchInteractor(
     private val repository: ImageRepository,
     private val presenter: GallerySearchPresenter,
@@ -22,14 +25,21 @@ class GallerySearchInteractor(
 
     private var loading = AtomicBoolean(false)
 
+    /**
+     * Puts [GallerySearchInteractor] in a working state meaning it will start processing for data updates and handle
+     * [GallerySearchPresenter.ViewEventsListener] calls.
+     */
     fun start() {
-        println("Start")
         presenter.setListener(this)
         presenter.updateState(Empty)
 
         currentPaginator?.subscribeForImageUpdates(currentImageUpdatesListener)
     }
 
+    /**
+     * Puts [GallerySearchInteractor] in a stopped state meaning it will no longer process and receive data updates and
+     * it will stop handling [GallerySearchPresenter.ViewEventsListener] calls.
+     */
     fun stop() {
         unsubscribe()
     }
@@ -79,8 +89,8 @@ class GallerySearchInteractor(
 
     }
 
-    inner class ImageUpdatesListenerImpl : ImagePaginator.ImageUpdatesListener {
-        override fun update(imageUrls: List<String>) {
+    private inner class ImageUpdatesListenerImpl : ImagePaginator.ImageUpdatesListener {
+        override fun onUpdate(imageUrls: List<String>) {
             currentState = Ready(imageUrls.map { ImageItem(it) })
             presenter.updateState(currentState)
 
@@ -88,7 +98,6 @@ class GallerySearchInteractor(
         }
 
         override fun onError(error: Exception) {
-            println("On Error")
             presenter.updateState(Failed)
         }
     }

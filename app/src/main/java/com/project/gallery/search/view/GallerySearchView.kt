@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.project.gallery.ApplicationComponent
 import com.project.gallery.R
-import com.project.gallery.image.HttpsBitmapUrlLoader
+import com.project.gallery.image.HttpBitmapUrlLoader
 import com.project.gallery.image.ImageLoader
 import com.project.gallery.search.view.GallerySearchPresenter.*
 import com.project.gallery.search.view.GallerySearchPresenter.State.*
@@ -34,10 +34,10 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
     private val itemsAdapter = ImageAdapter(context)
     private var viewEventsListener: ViewEventsListener? = null
-    // Shortcut: HttpsBitmapUrlLoader should be provided by ApplicationComponent
+    // Shortcut: HttpBitmapUrlLoader should be provided by ApplicationComponent
     private val imageLoader = ImageLoader(
         Executors.newFixedThreadPool(EXECUTORS_POOL_SIZE),
-        HttpsBitmapUrlLoader(),
+        HttpBitmapUrlLoader(),
         ApplicationComponent.bitmapLruCache
     )
 

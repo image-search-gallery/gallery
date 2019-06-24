@@ -3,7 +3,14 @@ package com.project.gallery.search.data.repository.flickr
 import org.json.JSONException
 import org.json.JSONObject
 
-class JsonResponseDeserializer {
+/**
+ * Used to deserialize JSON response to Flickr.
+ * Provides [Response] containing current page, total pages, and images from current page.
+ */
+class FlickrJsonResponseDeserializer {
+    /**
+     * Parses Flickr search result into a [Response].
+     */
     @Throws(JSONException::class)
     fun parseResult(result: String): Response {
         val root = JSONObject(result)
@@ -32,9 +39,21 @@ class JsonResponseDeserializer {
         )
     }
 
+    /**
+     *  Represents search response from Flickr. Contains current page, total pages, and images from current page.
+     */
     data class Response(
+        /**
+         * Current page.
+         */
         val page: Int,
+        /**
+         * Total pages in search result.
+         */
         val pages: Int,
+        /**
+         * Images from current page for searchh result.
+         */
         val images: List<String>
     )
 }
