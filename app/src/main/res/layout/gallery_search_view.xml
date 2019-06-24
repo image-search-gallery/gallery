@@ -5,11 +5,11 @@
 
     <EditText android:id="@+id/searchField"
               android:layout_width="match_parent"
-              android:paddingStart="8dp"
-              android:paddingEnd="8dp"
+              android:paddingStart="@dimen/padding_horizontal"
+              android:paddingEnd="@dimen/padding_horizontal"
               android:layout_height="50dp"
-              android:drawableLeft="@android:drawable/ic_menu_search"
-              android:hint="Search"/>
+              android:drawableStart="@android:drawable/ic_menu_search"
+              android:hint="@string/search"/>
 
 
     <FrameLayout android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Error while loading"
+                android:text="@string/error_while_loading"
                 android:visibility="gone"/>
 
         <TextView
@@ -43,7 +43,7 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nothing to show"
+                android:text="@string/nothing_to_show"
                 android:visibility="gone"/>
     </FrameLayout>
 </LinearLayout>
