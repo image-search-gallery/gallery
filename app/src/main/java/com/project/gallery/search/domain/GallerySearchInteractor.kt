@@ -68,7 +68,7 @@ class GallerySearchInteractor(
 
     override fun loadNext() {
 
-        if (!loading.get()) {
+        if (!loading.get() && currentPaginator?.hasNext() == true) {
             val state = currentState
             if (state is Ready) {
                 presenter.updateState(Ready(state.images + LoadingItem))

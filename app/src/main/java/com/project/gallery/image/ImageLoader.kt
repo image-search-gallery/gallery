@@ -10,22 +10,11 @@ import java.util.concurrent.Future
 
 class ImageLoader(
     private val executor: ExecutorService,
-    private val bitmapUrlLoader: BitmapUrlLoader
+    private val bitmapUrlLoader: BitmapUrlLoader,
+    private val lruCache: LruCache<String, Bitmap>
 ) {
 
     private val imageViewToFuture: HashMap<ImageView, Future<*>> = HashMap()
-    private var lruCache: LruCache<String, Bitmap>
-
-    init {
-        val maxMemoryBytes = Runtime.getRuntime().maxMemory()
-        val cacheSize = (maxMemoryBytes / 4).toInt()
-
-        lruCache = object : LruCache<String, Bitmap>(cacheSize) {
-            override fun sizeOf(key: String, value: Bitmap): Int {
-                return value.allocationByteCount
-            }
-        }
-    }
 
     fun load(imageUrl: String, view: ImageView) {
 

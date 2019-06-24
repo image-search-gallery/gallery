@@ -3,7 +3,6 @@ package com.project.gallery.search.data.repository.flickr
 import android.util.Log
 import com.project.gallery.search.data.repository.ImagePaginator
 import com.project.gallery.search.data.repository.ImageRepository
-import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
@@ -55,12 +54,15 @@ class FlickrImageRepository(
     }
 
     inner class FlickrImagePaginator(private val keyword: String) : ImagePaginator {
+
         private val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()
 
         private var currentImageUrls = listOf<String>()
 
         private var currentPage = 0
         private var totalPages = Int.MAX_VALUE
+
+        override fun hasNext()= currentPage < totalPages
 
         override fun loadNext() {
             val page = currentPage

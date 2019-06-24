@@ -5,6 +5,7 @@ import java.lang.Exception
 interface ImagePaginator {
     // TODO: add hasNext
     fun loadNext()
+    fun hasNext() : Boolean
     fun subscribeForImageUpdates(listener: ImageUpdatesListener)
     fun unsubscribeFromImageUpdates(listener: ImageUpdatesListener)
 
