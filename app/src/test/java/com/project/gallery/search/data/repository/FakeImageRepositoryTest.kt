@@ -8,14 +8,14 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnit
 
-class InMemoryImageRepositoryTest {
+class FakeImageRepositoryTest {
     @get:Rule
     var rule = MockitoJUnit.rule()
 
     @Mock
     lateinit var listener: ImagePaginator.ImageUpdatesListener
 
-    val paginator = InMemoryImageRepository().search(InMemoryImageRepository.KITTENS_KEYWORD)
+    val paginator = FakeImageRepository().search(FakeImageRepository.KITTENS_KEYWORD)
 
     @Test
     fun `Subscribing does not trigger updates`() {
@@ -26,7 +26,7 @@ class InMemoryImageRepositoryTest {
         paginator.loadNext()
 
         // Then
-        verify(listener).update(anyList<String>())
+        verify(listener).onUpdate(anyList<String>())
     }
 
     @Test
@@ -38,7 +38,7 @@ class InMemoryImageRepositoryTest {
         paginator.loadNext()
 
         // Then
-        verify(listener).update(anyList<String>())
+        verify(listener).onUpdate(anyList<String>())
     }
 
     @Test
@@ -51,6 +51,6 @@ class InMemoryImageRepositoryTest {
         paginator.loadNext()
 
         // Then
-        verify(listener, never()).update(anyList<String>())
+        verify(listener, never()).onUpdate(anyList<String>())
     }
 }

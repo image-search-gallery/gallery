@@ -8,8 +8,11 @@ import java.net.URL
 import java.net.URLEncoder
 import java.util.concurrent.Executor
 
+/**
+ * Flickr implementation of [ImageRepository]
+ */
 class FlickrImageRepository(
-    private val jsonResponseDeserializer: JsonResponseDeserializer,
+    private val flickrJsonResponseDeserializer: FlickrJsonResponseDeserializer,
     private val executor: Executor
 ) : ImageRepository {
 
@@ -17,6 +20,9 @@ class FlickrImageRepository(
         private const val API_KEY = "3e7cc266ae2b0e0d78e279ce8e361736"
     }
 
+    /**
+     * Used to restore [ImagePaginator] after configuration change.
+     */
     private var lastSearchKeyword: String? = null
     private var lastPaginator: FlickrImagePaginator? = null
 
@@ -53,6 +59,9 @@ class FlickrImageRepository(
         return FlickrImagePaginator(keyword).also { lastPaginator = it }
     }
 
+    /**
+     * Flickr implementation of [ImagePaginator].
+     */
     inner class FlickrImagePaginator(private val keyword: String) : ImagePaginator {
 
         private val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()
@@ -77,7 +86,7 @@ class FlickrImageRepository(
 
                 try {
                     val searchResult = performSearchRequest(url)
-                    val (resultPage, resultPages, resultImages) = jsonResponseDeserializer.parseResult(searchResult)
+                    val (resultPage, resultPages, resultImages) = flickrJsonResponseDeserializer.parseResult(searchResult)
 
                     currentPage = resultPage
                     totalPages = resultPages
@@ -100,7 +109,7 @@ class FlickrImageRepository(
         private fun notifyListeners() {
             synchronized(listeners) {
                 listeners.forEach {
-                    it.update(currentImageUrls)
+                    it.onUpdate(currentImageUrls)
                 }
             }
         }

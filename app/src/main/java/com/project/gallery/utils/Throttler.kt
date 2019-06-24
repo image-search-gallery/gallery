@@ -3,6 +3,11 @@ package com.project.gallery.utils
 import java.lang.IllegalArgumentException
 import java.util.*
 
+/**
+ * Throttles incoming tasks by a given interval in milliseconds.
+ * @param throttleByMilliseconds must be not negative.
+ * @throws IllegalArgumentException if [throttleByMilliseconds] is negative.
+ */
 class Throttler(private val throttleByMilliseconds: Long){
     private val timer = Timer()
     private var timerTask: TimerTask? = null
@@ -13,6 +18,10 @@ class Throttler(private val throttleByMilliseconds: Long){
         }
     }
 
+    /**
+     * Submits task which will be either run or rejected depending on a time passed between current and previous submit
+     * calls.
+     */
     fun submit(task: () -> Unit) {
         if(throttleByMilliseconds == 0L){
             task()

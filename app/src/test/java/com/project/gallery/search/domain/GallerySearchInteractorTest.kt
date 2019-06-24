@@ -2,10 +2,10 @@
 
 package com.project.gallery.search.domain
 
-import com.project.gallery.search.data.repository.InMemoryImageRepository
-import com.project.gallery.search.data.repository.InMemoryImageRepository.Companion.kittens
-import com.project.gallery.search.data.repository.InMemoryImageRepository.Companion.pageSize
-import com.project.gallery.search.data.repository.InMemoryImageRepository.Companion.puppies
+import com.project.gallery.search.data.repository.FakeImageRepository
+import com.project.gallery.search.data.repository.FakeImageRepository.Companion.kittens
+import com.project.gallery.search.data.repository.FakeImageRepository.Companion.pageSize
+import com.project.gallery.search.data.repository.FakeImageRepository.Companion.puppies
 import com.project.gallery.search.view.GallerySearchPresenter
 import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem
 import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.ImageItem
@@ -26,7 +26,7 @@ class GallerySearchInteractorTest {
 
     @Mock
     lateinit var presenter: GallerySearchPresenter
-    val inMemoryImageRepository = InMemoryImageRepository()
+    val inMemoryImageRepository = FakeImageRepository()
     val pushImageRepository = PushImageRepository()
     val throttler = Throttler(0)
 
@@ -44,7 +44,7 @@ class GallerySearchInteractorTest {
 
         // When
         interactor.start()
-        interactor.search(InMemoryImageRepository.KITTENS_KEYWORD)
+        interactor.search(FakeImageRepository.KITTENS_KEYWORD)
 
         // Then
         inOrder(presenter).apply {
@@ -77,7 +77,7 @@ class GallerySearchInteractorTest {
 
         // When
         interactor.start()
-        interactor.search(InMemoryImageRepository.KITTENS_KEYWORD)
+        interactor.search(FakeImageRepository.KITTENS_KEYWORD)
         interactor.loadNext()
 
         // Then
@@ -109,8 +109,8 @@ class GallerySearchInteractorTest {
 
         // When
         interactor.start()
-        interactor.search(InMemoryImageRepository.KITTENS_KEYWORD)
-        interactor.search(InMemoryImageRepository.PUPPIES_KEYWORD)
+        interactor.search(FakeImageRepository.KITTENS_KEYWORD)
+        interactor.search(FakeImageRepository.PUPPIES_KEYWORD)
 
         // Then
         inOrder(presenter).apply {
@@ -136,10 +136,10 @@ class GallerySearchInteractorTest {
 
         // When
         interactor.start()
-        interactor.search(InMemoryImageRepository.KITTENS_KEYWORD)
-        interactor.search(InMemoryImageRepository.PUPPIES_KEYWORD)
-        pushImageRepository.push(InMemoryImageRepository.PUPPIES_KEYWORD, puppiesUpdate)
-        pushImageRepository.push(InMemoryImageRepository.KITTENS_KEYWORD, kittensUpdate)
+        interactor.search(FakeImageRepository.KITTENS_KEYWORD)
+        interactor.search(FakeImageRepository.PUPPIES_KEYWORD)
+        pushImageRepository.push(FakeImageRepository.PUPPIES_KEYWORD, puppiesUpdate)
+        pushImageRepository.push(FakeImageRepository.KITTENS_KEYWORD, kittensUpdate)
 
         // Then
         inOrder(presenter).apply {
@@ -169,7 +169,7 @@ class GallerySearchInteractorTest {
 
         // When
         interactor.start()
-        interactor.search(InMemoryImageRepository.KITTENS_KEYWORD)
+        interactor.search(FakeImageRepository.KITTENS_KEYWORD)
         pushImageRepository.pushError()
 
         // Then

@@ -28,7 +28,7 @@ class PushImageRepository : ImageRepository {
             if (loading) {
                 synchronized(listeners) {
                     listeners.forEach {
-                        it.update(newImages)
+                        it.onUpdate(newImages)
                     }
                 }
             }

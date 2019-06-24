@@ -3,13 +3,16 @@ package com.project.gallery
 import android.graphics.Bitmap
 import android.util.LruCache
 import com.project.gallery.search.data.repository.flickr.FlickrImageRepository
-import com.project.gallery.search.data.repository.flickr.JsonResponseDeserializer
+import com.project.gallery.search.data.repository.flickr.FlickrJsonResponseDeserializer
 import java.util.concurrent.Executors
 
+/**
+ * Provides singleton dependencies for global application scope.
+ */
 object ApplicationComponent {
 
     val imageRepository by lazy {
-        FlickrImageRepository(JsonResponseDeserializer(), Executors.newCachedThreadPool())
+        FlickrImageRepository(FlickrJsonResponseDeserializer(), Executors.newCachedThreadPool())
     }
 
     val bitmapLruCache by lazy {
