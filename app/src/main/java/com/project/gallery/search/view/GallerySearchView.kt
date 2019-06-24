@@ -58,10 +58,6 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
                     val endHasBeenReached = lastVisible == totalItemCount - 1
                     if (totalItemCount > 0 && endHasBeenReached) {
-                        Log.d("WTF", "totalItemCount=$totalItemCount")
-                        Log.d("WTF", "lastVisible=$lastVisible")
-                        Log.d("WTF", "endHasBeenReached=$endHasBeenReached")
-                        Log.d("WTF", "loadNext")
                         viewEventsListener?.loadNext()
                     }
                 }
@@ -189,7 +185,6 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
             when (holder) {
                 is SearchResultImageViewHolder -> holder.setViewModel(items[position] as GalleryItem.ImageItem)
-                else -> Log.d("WTF", "loading item")
             }
         }
 

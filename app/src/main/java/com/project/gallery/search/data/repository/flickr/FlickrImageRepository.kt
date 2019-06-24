@@ -86,9 +86,13 @@ class FlickrImageRepository(
                     notifyListeners()
 
                     currentPage++
-                } catch (e: Exception) {
-                    Log.e("FlickrImageRepository", e.message, e)
-                    notifyListenersAboutFailure(e)
+                } catch (exception: Exception) {
+                    Log.e(
+                        FlickrImageRepository::class.java.simpleName,
+                        exception.message,
+                        exception
+                    )
+                    notifyListenersAboutFailure(exception)
                 }
             }
         }
