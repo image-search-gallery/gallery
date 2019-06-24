@@ -91,7 +91,7 @@ class GallerySearchInteractorTest {
     }
 
     @Test
-    fun `Changing search request returns new result`(){
+    fun `Changing search request returns new result`() {
         // Given
         val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter, throttler)
 
@@ -123,7 +123,7 @@ class GallerySearchInteractorTest {
     }
 
     @Test
-    fun `Changing search request cancels old result`(){
+    fun `Changing search request cancels old result`() {
         // Given
         val interactor = GallerySearchInteractor(pushImageRepository, presenter, Throttler(0))
 
@@ -151,7 +151,7 @@ class GallerySearchInteractorTest {
     }
 
     @Test
-    fun `Starting interactor sets listener for presenter`(){
+    fun `Starting interactor sets listener for presenter`() {
         // Given
         val interactor = GallerySearchInteractor(inMemoryImageRepository, presenter, throttler)
 
@@ -160,5 +160,23 @@ class GallerySearchInteractorTest {
 
         // Then
         verify(presenter).setListener(interactor)
+    }
+
+    @Test
+    fun `Error occured during loading results in failed state`() {
+        // Given
+        val interactor = GallerySearchInteractor(pushImageRepository, presenter, Throttler(0))
+
+        // When
+        interactor.start()
+        interactor.search(InMemoryImageRepository.KITTENS_KEYWORD)
+        pushImageRepository.pushError()
+
+        // Then
+//        inOrder(presenter).apply {
+//            verify(presenter).updateState(Empty)
+//            verify(presenter, atLeastOnce()).updateState(Loading)
+            verify(presenter).updateState(Failed)
+//        }
     }
 }

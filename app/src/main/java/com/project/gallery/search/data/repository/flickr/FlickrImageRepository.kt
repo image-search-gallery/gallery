@@ -84,8 +84,9 @@ class FlickrImageRepository(
                     notifyListeners()
 
                     currentPage++
-                } catch (e: IOException) {
+                } catch (e: Exception) {
                     Log.e("FlickrImageRepository", e.message, e)
+                    notifyListenersAboutFailure(e)
                 }
             }
         }
@@ -94,6 +95,14 @@ class FlickrImageRepository(
             synchronized(listeners) {
                 listeners.forEach {
                     it.update(currentImageUrls)
+                }
+            }
+        }
+
+        private fun notifyListenersAboutFailure(exception: Exception) {
+            synchronized(listeners) {
+                listeners.forEach {
+                    it.onError(exception)
                 }
             }
         }
