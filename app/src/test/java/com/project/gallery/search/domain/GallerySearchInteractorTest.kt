@@ -173,10 +173,6 @@ class GallerySearchInteractorTest {
         pushImageRepository.pushError()
 
         // Then
-//        inOrder(presenter).apply {
-//            verify(presenter).updateState(Empty)
-//            verify(presenter, atLeastOnce()).updateState(Loading)
-            verify(presenter).updateState(Failed)
-//        }
+        verify(presenter).updateState(Failed)
     }
 }
