@@ -9,6 +9,7 @@ import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.Loadin
 import com.project.gallery.search.view.GallerySearchPresenter.State
 import com.project.gallery.search.view.GallerySearchPresenter.State.*
 import com.project.gallery.utils.Throttler
+import java.lang.Exception
 import java.util.concurrent.atomic.AtomicBoolean
 
 class GallerySearchInteractor(
@@ -86,6 +87,10 @@ class GallerySearchInteractor(
             presenter.updateState(currentState)
 
             loading.compareAndSet(true, false)
+        }
+
+        override fun onError(error: Exception) {
+            presenter.updateState(Failed)
         }
     }
 }

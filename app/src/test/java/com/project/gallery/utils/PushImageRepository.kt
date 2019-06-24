@@ -5,22 +5,28 @@ import com.project.gallery.search.data.repository.ImageRepository
 
 class PushImageRepository : ImageRepository {
 
-    private val keywordToPaginator : HashMap<String, PushImagePaginator> = HashMap()
+    private val keywordToPaginator: HashMap<String, PushImagePaginator> = HashMap()
+    private var lastPaginator: PushImagePaginator? = null
 
-    fun push(keyword: String, newImages: List<String>){
+
+    fun push(keyword: String, newImages: List<String>) {
         keywordToPaginator[keyword]?.push(newImages)
     }
 
-    override fun search(keyword: String) = keywordToPaginator.getOrPut(keyword, {PushImagePaginator()})
+    fun pushError() {
+        lastPaginator?.notifyListenersAboutFailure(Exception())
+    }
 
-    inner class PushImagePaginator : ImagePaginator{
+    override fun search(keyword: String) = keywordToPaginator.getOrPut(keyword, { PushImagePaginator() }).also { lastPaginator = it }
+
+    inner class PushImagePaginator : ImagePaginator {
         private val listeners = arrayListOf<ImagePaginator.ImageUpdatesListener>()
 
         private var loading = false
 
         fun push(newImages: List<String>) {
             if (loading) {
-                synchronized(listeners){
+                synchronized(listeners) {
                     listeners.forEach {
                         it.update(newImages)
                     }
@@ -41,6 +47,14 @@ class PushImageRepository : ImageRepository {
         override fun unsubscribeFromImageUpdates(listener: ImagePaginator.ImageUpdatesListener) {
             synchronized(listeners) {
                 listeners.remove(listener)
+            }
+        }
+
+        fun notifyListenersAboutFailure(exception: Exception) {
+            synchronized(listeners) {
+                listeners.forEach {
+                    it.onError(exception)
+                }
             }
         }
     }

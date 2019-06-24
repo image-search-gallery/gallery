@@ -1,5 +1,7 @@
 package com.project.gallery.search.data.repository
 
+import java.lang.Exception
+
 interface ImagePaginator {
     // TODO: add hasNext
     fun loadNext()
@@ -8,5 +10,6 @@ interface ImagePaginator {
 
     interface ImageUpdatesListener{
         fun update(imageUrls : List<String>)
+        fun onError(error: Exception)
     }
 }

@@ -89,7 +89,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
                     itemsAdapter.setItems(state.images)
                 }
 
-                is NoInternet -> showNoInternet()
+                is Failed -> showFailedLoading()
                 is Empty -> showEmpty()
                 is Loading -> showInitialLoading()
             }
@@ -98,7 +98,7 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
     private fun showEmpty() {
         gallerySearchGrid.visibility = GONE
-        noInternet.visibility = GONE
+        loadingFailed.visibility = GONE
         initialLoading.visibility = GONE
 
         emptyResult.visibility = VISIBLE
@@ -106,22 +106,22 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
     private fun showInitialLoading() {
         gallerySearchGrid.visibility = GONE
-        noInternet.visibility = GONE
+        loadingFailed.visibility = GONE
         emptyResult.visibility = GONE
 
         initialLoading.visibility = VISIBLE
     }
 
-    private fun showNoInternet() {
+    private fun showFailedLoading() {
         initialLoading.visibility = GONE
         gallerySearchGrid.visibility = GONE
         emptyResult.visibility = GONE
 
-        noInternet.visibility = VISIBLE
+        loadingFailed.visibility = VISIBLE
     }
 
     private fun showSearchResult() {
-        noInternet.visibility = GONE
+        loadingFailed.visibility = GONE
         initialLoading.visibility = GONE
         emptyResult.visibility = GONE
 

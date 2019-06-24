@@ -12,7 +12,7 @@ interface GallerySearchPresenter {
 
         object Loading : State()
         object Empty : State()
-        object NoInternet : State()
+        object Failed : State()
     }
 
     /**
