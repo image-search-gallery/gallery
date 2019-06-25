@@ -45,7 +45,7 @@ class ImageLoader(
         view.tag = imageUrl
 
         val future = imageViewToFuture[view]
-        future?.cancel(true)
+        future?.cancel(false)
 
         performLoad(view, imageUrl)
     }
