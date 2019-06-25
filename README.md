@@ -15,6 +15,8 @@
 - As of now there is NO UI tests because it is hard to verify that there we correctly loaded pictures.
 
 ## Architecture
+![architecture](images/gallery_search_architecture.png)
+
 For an architecture overview please refer to the [following Google Drawing](https://docs.google.com/drawings/d/1r6Xq6DR6mJR96DdIumvpQtsj6Xs_mPr9swNmT4TN9tk/edit?usp=sharing).
 Here are some more points about the architecture in general and description and a concrete implementation used in this project.
 
