@@ -3,10 +3,10 @@
 ## What is inside?
 - Flickr search gallery with search-as-I-type field. Search keyword must be at least 3 symbols long.
 - Unit and integration tests using Mockito and Robolectric.
-- Image loading use `LruCache` to assure better network traffic usage.
+- Image loading uses `LruCache` to assure better network traffic usage.
 - Application saves gallery state on orientation change.
 - Shows loading progress while requesting next images and then displays convenient image placeholders while images are processed.
-- Starting API 26. Purple colored instead of default application icon for easier spotting. 
+- Purple colored instead of default application icon for easier spotting. Since this is an adaptive icon it will be changed only starting API 26.
 - Application named Gallery.
 
 ## Shortcuts (or what is not in the box).
