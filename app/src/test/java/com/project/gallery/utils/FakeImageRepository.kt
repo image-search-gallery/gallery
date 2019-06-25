@@ -1,4 +1,7 @@
-package com.project.gallery.search.data.repository
+package com.project.gallery.utils
+
+import com.project.gallery.search.data.repository.ImagePaginator
+import com.project.gallery.search.data.repository.ImageRepository
 
 /**
  * [ImageRepository] implementation which uses hard-coded URLs.
@@ -46,7 +49,8 @@ class FakeImageRepository : ImageRepository {
     /**
      * [ImagePaginator] implementation which uses hard-coded strings as a search result.
      */
-    inner class FakeImagePaginator(private val keyword: String) : ImagePaginator {
+    inner class FakeImagePaginator(private val keyword: String) :
+        ImagePaginator {
 
         private val maxImageCollectionIndex = when (keyword) {
             KITTENS_KEYWORD -> kittens.size - 1

@@ -81,7 +81,6 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
     override fun updateState(state: State) {
         post {
-            Log.d("WTF", state.toString())
             when (state) {
                 is Ready -> {
                     showSearchResult()
@@ -140,10 +139,6 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
         private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-        init {
-//            setHasStableIds(true)
-        }
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return when (viewType) {
                 READY_ITEM_TYPE -> {
@@ -166,8 +161,6 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
         }
 
         override fun getItemCount() = items.size
-
-//        override fun getItemId(position: Int) = items[position].hashCode().toLong()
 
         override fun getItemViewType(position: Int): Int {
             return when (items[position]) {

@@ -2,10 +2,10 @@
 
 package com.project.gallery.search.domain
 
-import com.project.gallery.search.data.repository.FakeImageRepository
-import com.project.gallery.search.data.repository.FakeImageRepository.Companion.kittens
-import com.project.gallery.search.data.repository.FakeImageRepository.Companion.pageSize
-import com.project.gallery.search.data.repository.FakeImageRepository.Companion.puppies
+import com.project.gallery.utils.FakeImageRepository
+import com.project.gallery.utils.FakeImageRepository.Companion.kittens
+import com.project.gallery.utils.FakeImageRepository.Companion.pageSize
+import com.project.gallery.utils.FakeImageRepository.Companion.puppies
 import com.project.gallery.search.view.GallerySearchPresenter
 import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem
 import com.project.gallery.search.view.GallerySearchPresenter.GalleryItem.ImageItem
