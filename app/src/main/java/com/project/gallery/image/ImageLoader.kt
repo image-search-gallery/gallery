@@ -14,6 +14,7 @@ import java.util.concurrent.Future
  * Uses [LruCache] to store recently created [Bitmap]s.
  * Modifies an [ImageView] tag in order to determine if a completed [Bitmap] loading request result is still valid and
  * should be set to the aforementioned [ImageView].
+ * Holds references to image views and should not be stored in a static context.
  */
 class ImageLoader(
     private val executor: ExecutorService,
