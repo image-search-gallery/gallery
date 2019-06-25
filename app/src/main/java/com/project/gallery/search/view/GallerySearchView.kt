@@ -22,21 +22,19 @@ import com.project.gallery.search.view.GallerySearchPresenter.*
 import com.project.gallery.search.view.GallerySearchPresenter.State.*
 import kotlinx.android.synthetic.main.gallery_search_grid_item.view.*
 import kotlinx.android.synthetic.main.gallery_search_view.view.*
-import java.util.concurrent.Executors
 
 class GallerySearchView(context: Context, attributeSet: AttributeSet) : GallerySearchPresenter,
     FrameLayout(context, attributeSet) {
 
     companion object {
         private const val GRID_COLUMN_COUNT = 3
-        private const val EXECUTORS_POOL_SIZE = 3
     }
 
     private val itemsAdapter = ImageAdapter(context)
     private var viewEventsListener: ViewEventsListener? = null
     // Shortcut: HttpBitmapUrlLoader should be provided by ApplicationComponent
     private val imageLoader = ImageLoader(
-        Executors.newFixedThreadPool(EXECUTORS_POOL_SIZE),
+        ApplicationComponent.imageLoaderExecutor,
         HttpBitmapUrlLoader(),
         ApplicationComponent.bitmapLruCache
     )
@@ -83,7 +81,6 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
     override fun updateState(state: State) {
         post {
-            Log.d("WTF", state.toString())
             when (state) {
                 is Ready -> {
                     showSearchResult()
@@ -142,10 +139,6 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
         private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-        init {
-//            setHasStableIds(true)
-        }
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return when (viewType) {
                 READY_ITEM_TYPE -> {
@@ -168,8 +161,6 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
         }
 
         override fun getItemCount() = items.size
-
-//        override fun getItemId(position: Int) = items[position].hashCode().toLong()
 
         override fun getItemViewType(position: Int): Int {
             return when (items[position]) {

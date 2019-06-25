@@ -35,7 +35,7 @@ interface ImagePaginator {
         fun onUpdate(imageUrls: List<String>)
 
         /**
-         * Provides error report in case if procuring page update has failed.
+         * Provides an error report in case if procuring page update has failed.
          */
         fun onError(error: Exception)
     }

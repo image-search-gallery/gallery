@@ -2,6 +2,7 @@
 
 package com.project.gallery.search.data.repository
 
+import com.project.gallery.utils.FakeImageRepository
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
@@ -15,7 +16,8 @@ class FakeImageRepositoryTest {
     @Mock
     lateinit var listener: ImagePaginator.ImageUpdatesListener
 
-    val paginator = FakeImageRepository().search(FakeImageRepository.KITTENS_KEYWORD)
+    val paginator = FakeImageRepository()
+        .search(FakeImageRepository.KITTENS_KEYWORD)
 
     @Test
     fun `Subscribing does not trigger updates`() {

@@ -14,6 +14,7 @@ class HttpBitmapUrlLoader : BitmapUrlLoader {
     override fun load(url: String): Bitmap? {
         val connection = URL(url).openConnection() as HttpURLConnection
         var bitmap: Bitmap? = null
+
         try {
             connection.inputStream.use {
                 bitmap = BitmapFactory.decodeStream(it)

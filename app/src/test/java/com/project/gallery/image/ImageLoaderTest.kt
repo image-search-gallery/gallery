@@ -34,12 +34,11 @@ class ImageLoaderTest {
     fun setUp(){
         imageLoader = ImageLoader(TestExecutorService(), bitmapUrlLoader, getBitmapLruCache())
 
-        bitmapUrlLoader.load(anyString()) willReturn Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+        bitmapUrlLoader.load(anyString()) willReturn Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
     }
 
     private fun getBitmapLruCache() : LruCache<String, Bitmap> {
-        val maxMemoryBytes = Runtime.getRuntime().maxMemory()
-        val cacheSize = (maxMemoryBytes / 4).toInt()
+        val cacheSize = 100
 
         return object : LruCache<String, Bitmap>(cacheSize) {
             override fun sizeOf(key: String, value: Bitmap): Int {
