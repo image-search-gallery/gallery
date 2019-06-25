@@ -22,7 +22,6 @@ import com.project.gallery.search.view.GallerySearchPresenter.*
 import com.project.gallery.search.view.GallerySearchPresenter.State.*
 import kotlinx.android.synthetic.main.gallery_search_grid_item.view.*
 import kotlinx.android.synthetic.main.gallery_search_view.view.*
-import java.util.concurrent.Executors
 
 class GallerySearchView(context: Context, attributeSet: AttributeSet) : GallerySearchPresenter,
     FrameLayout(context, attributeSet) {

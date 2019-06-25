@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.util.LruCache
 import com.project.gallery.search.data.repository.flickr.FlickrImageRepository
 import com.project.gallery.search.data.repository.flickr.FlickrJsonResponseDeserializer
-import com.project.gallery.search.view.GallerySearchView
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
