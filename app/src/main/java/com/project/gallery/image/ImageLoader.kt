@@ -5,6 +5,7 @@ import android.util.Log
 import android.util.LruCache
 import android.widget.ImageView
 import com.project.gallery.R
+import java.lang.ref.WeakReference
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future
 
@@ -20,12 +21,15 @@ class ImageLoader(
     private val lruCache: LruCache<String, Bitmap>
 ) {
 
+    /**
+     * Used to cancel already existing executors if there is a new request incoming for the same image view.
+     */
     private val imageViewToFuture: HashMap<ImageView, Future<*>> = HashMap()
 
     /**
-     * Loads [Bitmap] from given URL and sets it to given [ImageView]
-     * @param imageUrl to load image from
-     * @param view to set loaded image to
+     * Loads [Bitmap] from given URL and sets it to given [ImageView].
+     * @param imageUrl to load image from.
+     * @param view to set loaded image to.
      */
     fun load(imageUrl: String, view: ImageView) {
 
@@ -43,14 +47,21 @@ class ImageLoader(
         val future = imageViewToFuture[view]
         future?.cancel(true)
 
+        performLoad(view, imageUrl)
+    }
+
+    private fun performLoad(view: ImageView, imageUrl: String) {
+
+        val viewReference = WeakReference<ImageView>(view)
+
         imageViewToFuture[view] = executor.submit {
             try {
                 val bitmap = bitmapUrlLoader.load(imageUrl)
 
-                view.post {
+                viewReference.get()?.post {
                     bitmap?.let {
-                        if (view.tag == imageUrl) {
-                            view.setImageBitmap(bitmap)
+                        if (viewReference.get()?.tag == imageUrl) {
+                            viewReference.get()?.setImageBitmap(bitmap)
                         }
 
                         lruCache.put(imageUrl, it)
@@ -62,5 +73,4 @@ class ImageLoader(
             }
         }
     }
-
 }

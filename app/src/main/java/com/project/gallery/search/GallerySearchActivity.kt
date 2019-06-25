@@ -8,7 +8,8 @@ import com.project.gallery.search.domain.GallerySearchInteractor
 import kotlinx.android.synthetic.main.gallery_search_activity.*
 
 /**
- * Displays search field which performs dynamic search and search result items in a grid.
+ * Displays search field which performs search-as-I-type (search keyword must be longer than 3 symbols) and displays
+ * search result items in a grid.
  */
 class GallerySearchActivity : AppCompatActivity() {
 

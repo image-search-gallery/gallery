@@ -29,14 +29,13 @@ class GallerySearchView(context: Context, attributeSet: AttributeSet) : GalleryS
 
     companion object {
         private const val GRID_COLUMN_COUNT = 3
-        private const val EXECUTORS_POOL_SIZE = 3
     }
 
     private val itemsAdapter = ImageAdapter(context)
     private var viewEventsListener: ViewEventsListener? = null
     // Shortcut: HttpBitmapUrlLoader should be provided by ApplicationComponent
     private val imageLoader = ImageLoader(
-        Executors.newFixedThreadPool(EXECUTORS_POOL_SIZE),
+        ApplicationComponent.imageLoaderExecutor,
         HttpBitmapUrlLoader(),
         ApplicationComponent.bitmapLruCache
     )
