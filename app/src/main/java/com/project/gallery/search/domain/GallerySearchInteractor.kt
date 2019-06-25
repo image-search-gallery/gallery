@@ -25,6 +25,10 @@ class GallerySearchInteractor(
 
     private var loading = AtomicBoolean(false)
 
+    companion object {
+        private const val MIN_KEYWORD_LENGTH = 3
+    }
+
     /**
      * Puts [GallerySearchInteractor] in a working state meaning it will start processing for data updates and handle
      * [GallerySearchPresenter.ViewEventsListener] calls.
@@ -47,7 +51,7 @@ class GallerySearchInteractor(
     override fun search(keyword: String) {
         loading.compareAndSet(false, true)
 
-        if (keyword.length < 3) {
+        if (keyword.length < MIN_KEYWORD_LENGTH) {
             presenter.updateState(Empty)
             unsubscribe()
             currentPaginator = null
@@ -55,6 +59,10 @@ class GallerySearchInteractor(
         }
 
 
+        submitWithThrottling(keyword)
+    }
+
+    private fun submitWithThrottling(keyword: String) {
         throttler.submit {
 
             presenter.updateState(Loading)
@@ -90,6 +98,7 @@ class GallerySearchInteractor(
     }
 
     private inner class ImageUpdatesListenerImpl : ImagePaginator.ImageUpdatesListener {
+
         override fun onUpdate(imageUrls: List<String>) {
             currentState = Ready(imageUrls.map { ImageItem(it) })
             presenter.updateState(currentState)
@@ -99,6 +108,8 @@ class GallerySearchInteractor(
 
         override fun onError(error: Exception) {
             presenter.updateState(Failed)
+
+            loading.compareAndSet(true, false)
         }
     }
 }

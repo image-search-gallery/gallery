@@ -13,6 +13,9 @@ class GallerySearchComponent(
     private val applicationComponent: ApplicationComponent
 ) {
 
+    /**
+     * Provides gallery search screen interactor.
+     */
     val interactor by lazy {
         GallerySearchInteractor(
             applicationComponent.imageRepository,

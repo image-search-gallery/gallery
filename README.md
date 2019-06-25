@@ -1,12 +1,13 @@
 # README #
 
 ## What is inside?
-- Flickr search gallery with search-as-I-type field.
+- Flickr search gallery with search-as-I-type field. Search keyword must be at least 3 symbols long.
 - Unit and integration tests using Mockito and Robolectric.
 - Image loading use `LruCache` to assure better network traffic usage.
 - Application saves gallery state on orientation change.
 - Shows loading progress while requesting next images and then displays convenient image placeholders while images are processed.
-- Purple colored instead of default application icon for easier spotting. Application itself named Gallery.
+- Starting API 26. Purple colored instead of default application icon for easier spotting. 
+- Application named Gallery.
 
 ## Shortcuts (or what is not in the box).
 - Application IS NOT caching data for offline usage and displays error message instead.
@@ -14,6 +15,8 @@
 - As of now there is NO UI tests because it is hard to verify that there we correctly loaded pictures.
 
 ## Architecture
+![architecture](images/gallery_search_architecture.png)
+
 For an architecture overview please refer to the [following Google Drawing](https://docs.google.com/drawings/d/1r6Xq6DR6mJR96DdIumvpQtsj6Xs_mPr9swNmT4TN9tk/edit?usp=sharing).
 Here are some more points about the architecture in general and description and a concrete implementation used in this project.
 
