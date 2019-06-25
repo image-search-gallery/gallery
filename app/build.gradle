@@ -20,15 +20,36 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.core:core-ktx:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Android X
+    implementation "androidx.appcompat:appcompat:$android_x_version"
+    implementation "androidx.core:core-ktx:$android_x_version"
+    implementation "com.google.android.material:material:$android_material_version"
+
+    // Mockito
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
+
+    // Robolectric
+    testImplementation "org.robolectric:robolectric:$robolectric_version"
+
+    // Google Truth
+    testImplementation "com.google.truth:truth:$google_truth_version"
+
+    // Android Test Kit
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test:runner:$android_x_test_runner_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 }
