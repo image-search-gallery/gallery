@@ -13,6 +13,7 @@ class FlickrJsonResponseDeserializer {
      */
     @Throws(JSONException::class)
     fun parseResult(result: String): Response {
+
         val root = JSONObject(result)
         val photos = root.getJSONObject("photos")
         val photoList = photos.getJSONArray("photo")

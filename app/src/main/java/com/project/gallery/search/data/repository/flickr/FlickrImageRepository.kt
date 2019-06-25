@@ -28,7 +28,8 @@ class FlickrImageRepository(
 
     private fun buildUrl(keyword: String, pageNumber: Int): URL {
         return URL(
-            "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=$API_KEY&format=json&nojsoncallback=1&safe_search=1&page=$pageNumber&text=${URLEncoder.encode(
+            "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=$API_KEY&format=json&nojsoncallback=1&safe_search=1&page=$pageNumber&text=${
+            URLEncoder.encode(
                 keyword,
                 "UTF-8"
             )};"
@@ -37,6 +38,7 @@ class FlickrImageRepository(
 
     private fun performSearchRequest(url: URL): String {
         val urlConnection = url.openConnection() as HttpURLConnection
+
         try {
             urlConnection.inputStream.use {
                 it.reader().use { reader ->
@@ -51,6 +53,7 @@ class FlickrImageRepository(
     override fun search(keyword: String): FlickrImagePaginator {
         val existingSearch = lastSearchKeyword
         val existingPaginator = lastPaginator
+
         if (keyword == existingSearch && existingPaginator != null) {
             return existingPaginator
         }
@@ -81,12 +84,18 @@ class FlickrImageRepository(
                 return
             }
 
+            performLoading(page)
+        }
+
+        private fun performLoading(page: Int) {
             executor.execute {
                 val url = buildUrl(keyword, page)
 
                 try {
                     val searchResult = performSearchRequest(url)
-                    val (resultPage, resultPages, resultImages) = flickrJsonResponseDeserializer.parseResult(searchResult)
+                    val (resultPage, resultPages, resultImages) = flickrJsonResponseDeserializer.parseResult(
+                        searchResult
+                    )
 
                     currentPage = resultPage
                     totalPages = resultPages
@@ -95,6 +104,7 @@ class FlickrImageRepository(
                     notifyListeners()
 
                     currentPage++
+
                 } catch (exception: Exception) {
                     Log.e(
                         FlickrImageRepository::class.java.simpleName,
