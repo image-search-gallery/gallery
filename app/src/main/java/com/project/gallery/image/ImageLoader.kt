@@ -34,6 +34,8 @@ class ImageLoader(
      */
     fun load(imageUrl: String, view: ImageView) {
 
+        view.tag = imageUrl
+
         val cachedImage = lruCache.get(imageUrl)
 
         cachedImage?.let {
@@ -42,8 +44,6 @@ class ImageLoader(
         }
 
         view.setImageResource(R.drawable.ic_image_place_holder)
-
-        view.tag = imageUrl
 
         val future = imageViewToFuture[view]
         future?.cancel(false)

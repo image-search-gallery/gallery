@@ -89,6 +89,7 @@ class ImageLoaderTest {
 
         // Then
         verify(bitmapUrlLoader).load(url)
+        assertThat(imageView.tag).isEqualTo(url)
     }
 
     @Test
